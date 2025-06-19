@@ -50,3 +50,20 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+# Visual Studio
+.vs/
+*.VC.db
+*.VC.opendb
+*.suo
+*.user
+*.ncb
+*.aps
+*.cache
+*.log
+
+# Diretórios de build do Visual Studio
+Debug/
+Release/
+x64/
+x86/
+ipch/
