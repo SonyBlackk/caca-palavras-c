@@ -72,8 +72,7 @@ void salvar_palavra(const Palavra* p) {
     printf("Palavra '%s' salva com sucesso!\n", p->texto);
 }
 
-// Função carregar: Cria um ponteiro do tipo FILE, que será utilizado para ler as palavras do arquivo binario "palavras.bin".
-// Ela recebe dois argumentos, o lista_palavras e num_palavras, que viram como NULL, 
+// Função carregar: Cria um ponteiro do tipo FILE, que será utilizado para ler as palavras do arquivo binario "palavras.bin", recebe dois argumentos, a lista de palavras e o numero de palavras,.
 void carregar_palavras(Palavra** lista_palavras, int* num_palavras) {
     FILE* arquivo = fopen("palavras.bin", "rb");
     if (arquivo == NULL) {
@@ -164,9 +163,6 @@ void apagar_palavra(const char* palavra_apagar) {
     free(lista_todas_palavras);
 }
 
-// Função para mostrar todas as palavras salvas, chama a função carregar_palavras para capturar e ler o arquivo,
-// e a partir disso ela faz um for que percorre todas as palavras exibindo as mesmas com o id delas e o nome da palavra
-// no final de tudo faz um free para liberar a memória alocada
 void mostrar_palavras() {
     Palavra* lista_todas_palavras = NULL;
     int num_todas_palavras = 0;
