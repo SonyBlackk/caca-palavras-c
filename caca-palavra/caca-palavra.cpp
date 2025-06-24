@@ -498,6 +498,9 @@ void menu_principal() {
             if (strlen(nova_palavra.texto) <= 5) {
                 printf("A palavra deve ter no minimo 5 letras.\n");
             }
+            else if (strlen(nova_palavra.texto) > 9) {
+                printf("A palavra~não pode ter mais de 10 letras");
+            }
             else if (palavra_existe(nova_palavra.texto)) {
                 printf("A palavra '%s' ja existe no cadastro.\n", nova_palavra.texto);
             }
@@ -563,7 +566,7 @@ void menu_pos_jogo() {
             return;
         case 3:
             printf("Saindo do jogo. Ate mais!\n");
-            exit(0); // Encerra o programa
+            exit(0);
         default:
             printf("Opcao invalida. Tente novamente.\n");
         }
@@ -574,9 +577,6 @@ int main() {
     menu_principal();
     return 0;
 }
-
-
-
 
 // Funcao auxiliar para verificar se uma posicao e valida na matriz
 int is_valid(int r, int c, int linhas, int colunas) {
@@ -682,5 +682,3 @@ int buscar_palavra_recursiva_aux(char** matriz, int linhas, int colunas, const c
 
     return encontrada;
 }
-
-
