@@ -1,7 +1,7 @@
 // ****************************************************************************************
-// JOGO DE CA«A PALAVRAS EM C, DESENVOLVIDO POR LUIZ EDUARDO JELONSCHEK E JO√O PEDRO GEHLEN
+// JOGO DE CA√áA PALAVRAS EM C, DESENVOLVIDO POR LUIZ EDUARDO JELONSCHEK E JO√ÉO PEDRO GEHLEN
 // ****************************************************************************************
-#define _CRT_SECURE_NO_WARNINGS // Visual Studio tava me impedindo de rodar o codigo por conta dos printf e scanf n„o seguros, ai coloquei isso
+#define _CRT_SECURE_NO_WARNINGS // Visual Studio tava me impedindo de rodar o codigo por conta dos printf e scanf n√£o seguros, ai coloquei isso
 
 // Bibliotecas
 #include <stdio.h>
@@ -9,7 +9,7 @@
 #include <string.h>
 #include <time.h>
 
-// Variaveis Globais que Ser„o Usadas no Jogo
+// Variaveis Globais que Ser√£o Usadas no Jogo
 #define MAX_PALAVRA_LEN 50
 #define MIN_DIMENSAO 7
 #define MAX_DIMENSAO 9
@@ -32,7 +32,7 @@ typedef struct {
 } Jogo;
 
 
-// "Sumario" das funÁıes, para facilitar a leitura e entendimento do cÛdigo.
+// "Sumario" das fun√ß√µes, para facilitar a leitura e entendimento do c√≥digo.
 // Funcoes de manipulacao de arquivo
 void salvar_palavra(const Palavra* p);
 void carregar_palavras(Palavra** lista_palavras, int* num_palavras);
@@ -61,9 +61,9 @@ int is_valid(int r, int c, int linhas, int colunas);
 
 // Funcoes de manipulacao de arquivo
 
-// FunÁ„o salvar: Cria um ponteiro do tipo FILE, que ser· utilizado para gravar novas palavras no arquivo binario "palavras.bin", utiliza o mÈtodo "ab", pois "a" de ADD e "b" de "BINARY".
-// Se o arquivo for igual a NULL, ou seja, algum erro ocorreu, ele da return na funÁ„o e exibe uma mensagem de erro.
-// Se o arquivo for aberto com sucesso, ele utiliza a funÁ„o fwrite para escrever a palavra (recebida na funÁ„o) no arquivo, e depois fecha o mesmo.
+// Fun√ß√£o salvar: Cria um ponteiro do tipo FILE, que ser√° utilizado para gravar novas palavras no arquivo binario "palavras.bin", utiliza o m√©todo "ab", pois "a" de ADD e "b" de "BINARY".
+// Se o arquivo for igual a NULL, ou seja, algum erro ocorreu, ele da return na fun√ß√£o e exibe uma mensagem de erro.
+// Se o arquivo for aberto com sucesso, ele utiliza a fun√ß√£o fwrite para escrever a palavra (recebida na fun√ß√£o) no arquivo, e depois fecha o mesmo.
 void salvar_palavra(const Palavra* p) {
     FILE* arquivo = fopen("palavras.bin", "ab");
     if (arquivo == NULL) {
@@ -75,11 +75,11 @@ void salvar_palavra(const Palavra* p) {
     printf("Palavra '%s' salva com sucesso!\n", p->texto);
 }
 
-// FunÁ„o carregar: Cria um ponteiro do tipo FILE, que ser· utilizado para ler as palavras do arquivo binario "palavras.bin".
+// Fun√ß√£o carregar: Cria um ponteiro do tipo FILE, que ser√° utilizado para ler as palavras do arquivo binario "palavras.bin".
 // Ela recebe dois argumentos, o lista_palavras e num_palavras, que viram como NULL, abre o arquivo com o formato "rb" onde r = read e b = binary.
 // Depois verifica se deu certo a abertura e utiliza fseek para mover o cursos para o final do arquivo para saber o tamanho dele, depois move o cursor para o inicio novametne com o segundo fseek.
-// ApÛs isso ele pega o tamanho do arquivo e divide pelo tamanho da palavra, e chega no resultado.
-// Por final ele aloca a memÛria necessaria para essas palavras e verifica se deu certo a alocaÁ„o, se deu certo ele usa o fread para ler o arquivo e por ultimo ele fecha o arquivo.
+// Ap√≥s isso ele pega o tamanho do arquivo e divide pelo tamanho da palavra, e chega no resultado.
+// Por final ele aloca a mem√≥ria necessaria para essas palavras e verifica se deu certo a aloca√ß√£o, se deu certo ele usa o fread para ler o arquivo e por ultimo ele fecha o arquivo.
 void carregar_palavras(Palavra** lista_palavras, int* num_palavras) {
     FILE* arquivo = fopen("palavras.bin", "rb");
     if (arquivo == NULL) {
@@ -170,9 +170,9 @@ void apagar_palavra(const char* palavra_apagar) {
     free(lista_todas_palavras);
 }
 
-// FunÁ„o para mostrar todas as palavras salvas, chama a funÁ„o carregar_palavras para capturar e ler o arquivo,
+// Fun√ß√£o para mostrar todas as palavras salvas, chama a fun√ß√£o carregar_palavras para capturar e ler o arquivo,
 // e a partir disso ela faz um for que percorre todas as palavras exibindo as mesmas com o id delas e o nome da palavra
-// no final de tudo faz um free para liberar a memÛria alocada
+// no final de tudo faz um free para liberar a mem√≥ria alocada
 void mostrar_palavras() {
     Palavra* lista_todas_palavras = NULL;
     int num_todas_palavras = 0;
@@ -213,8 +213,8 @@ void liberar_jogo(Jogo* jogo) {
     }
 }
 
-// Inicialmente libera a memÛria para caso tenha outra matriz aberta, depois pega o tamanho da linha e da coluna com o jogador, aloca a memoria necessaria para as linhas e valida se a alocaÁ„o deu certo.
-// Executa um for inicial para as linhas e dentro outro for para as colunas, alocando a memÛria necessaria para isso tambÈm, ai dentro do for verifica se a alocaÁ„o das colunas deu certo, caso de errado da um exit.
+// Inicialmente libera a mem√≥ria para caso tenha outra matriz aberta, depois pega o tamanho da linha e da coluna com o jogador, aloca a memoria necessaria para as linhas e valida se a aloca√ß√£o deu certo.
+// Executa um for inicial para as linhas e dentro outro for para as colunas, alocando a mem√≥ria necessaria para isso tamb√©m, ai dentro do for verifica se a aloca√ß√£o das colunas deu certo, caso de errado da um exit.
 void gerar_matriz(Jogo* jogo) {
     liberar_jogo(jogo); 
 
@@ -235,10 +235,10 @@ void gerar_matriz(Jogo* jogo) {
     }
 }
 
-// Receve a lista com todas as palavras e a quantidade de palavras totais, ai coloca todas as palavras como NULL para garantir que n„o h· lixo de memÛria.
-// Posteriormente aloca a memoria necessaria para as palavras e valida se a alocaÁ„o foi um sucesso,
+// Receve a lista com todas as palavras e a quantidade de palavras totais, ai coloca todas as palavras como NULL para garantir que n√£o h√° lixo de mem√≥ria.
+// Posteriormente aloca a memoria necessaria para as palavras e valida se a aloca√ß√£o foi um sucesso,
 // Depois far um for para adicionar um valor aos indices sorteados baseado na quantidade de palavras
-// E por fim, embaralha as palavras usando a funÁ„o rand()
+// E por fim, embaralha as palavras usando a fun√ß√£o rand()
 void sortear_palavras_jogo(Jogo* jogo, Palavra* lista_todas_palavras, int num_todas_palavras) {
 
     for (int i = 0; i < NUM_PALAVRAS_JOGO; i++) {
@@ -261,7 +261,7 @@ void sortear_palavras_jogo(Jogo* jogo, Palavra* lista_todas_palavras, int num_to
         indices_sorteados[j] = temp;
     }
 
-    // Valida se a palavra cabe na MATRIZ (O usuario n„o pode digitar uma palavra maior que 9 caracteres, mas pode acontecer dele jogar com uma matriz de 7 x 7 e ter palavras com 9 caracteres, ai precisei validar isso)
+    // Valida se a palavra cabe na MATRIZ (O usuario n√£o pode digitar uma palavra maior que 9 caracteres, mas pode acontecer dele jogar com uma matriz de 7 x 7 e ter palavras com 9 caracteres, ai precisei validar isso)
     jogo->palavras_restantes = 0;
     for (int i = 0; i < NUM_PALAVRAS_JOGO; i++) {
         if (strlen(lista_todas_palavras[indices_sorteados[i]].texto) <= jogo->linhas &&
@@ -447,7 +447,7 @@ void menu_principal() {
             int num_todas_palavras = 0;
             carregar_palavras(&todas_palavras, &num_todas_palavras);
 
-            // Valida se o numero de palavras È menor que minimo necessario, como o minimo È sempre 10, foi gravado em uma variavel global.
+            // Valida se o numero de palavras √© menor que minimo necessario, como o minimo √© sempre 10, foi gravado em uma variavel global.
             if (num_todas_palavras < MIN_PALAVRAS_ARQUIVO) {
                 printf("E necessario ter no minimo %d palavras cadastradas para iniciar um novo jogo.\n", MIN_PALAVRAS_ARQUIVO);
                 free(todas_palavras);
@@ -488,6 +488,18 @@ void menu_principal() {
 
             if (jogo_atual.palavras_restantes == 0) {
                 printf("\nParabens! Voce encontrou todas as palavras em %d tentativas!\n", jogo_atual.tentativas);
+
+                    printf("      ____________\n");
+                    printf("     '-._==_==_.-'\n");
+                    printf("      .-\\:      /-.\n");
+                    printf("     | (|:.     |) |\n");
+                    printf("      '-|:.     |-'\n");
+                    printf("        \\::.    /\n");
+                    printf("         '::. .'\n");
+                    printf("           ) (\n");
+                    printf("         _.' '._\n");
+                    printf("        *\"\"\"\"\"\"\"*\n");
+                
             }
 
             menu_pos_jogo();
