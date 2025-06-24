@@ -76,7 +76,9 @@ void salvar_palavra(const Palavra* p) {
 }
 
 // Função carregar: Cria um ponteiro do tipo FILE, que será utilizado para ler as palavras do arquivo binario "palavras.bin".
-// Ela recebe dois argumentos, o lista_palavras e num_palavras, que viram como NULL, a ca
+// Ela recebe dois argumentos, o lista_palavras e num_palavras, que viram como NULL, abre o arquivo com o formato "rb" onde r = read e b = binary,
+// depois verifica se deu certo a abertura e utiliza fseek para mover o cursos para o final do arquivo para saber o tamanho dele, depois move o cursor para o inicio novametne com o segundo fseek,
+// 
 void carregar_palavras(Palavra** lista_palavras, int* num_palavras) {
     FILE* arquivo = fopen("palavras.bin", "rb");
     if (arquivo == NULL) {
@@ -499,7 +501,7 @@ void menu_principal() {
                 printf("A palavra deve ter no minimo 5 letras.\n");
             }
             else if (strlen(nova_palavra.texto) > 9) {
-                printf("A palavra~não pode ter mais de 10 letras");
+                printf("A palavra nao pode ter mais de 10 letras");
             }
             else if (palavra_existe(nova_palavra.texto)) {
                 printf("A palavra '%s' ja existe no cadastro.\n", nova_palavra.texto);

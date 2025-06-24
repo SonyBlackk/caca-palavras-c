@@ -76,7 +76,10 @@ void salvar_palavra(const Palavra* p) {
 }
 
 // Função carregar: Cria um ponteiro do tipo FILE, que será utilizado para ler as palavras do arquivo binario "palavras.bin".
-// Ela recebe dois argumentos, o lista_palavras e num_palavras, que viram como NULL, a ca
+// Ela recebe dois argumentos, o lista_palavras e num_palavras, que viram como NULL, abre o arquivo com o formato "rb" onde r = read e b = binary.
+// Depois verifica se deu certo a abertura e utiliza fseek para mover o cursos para o final do arquivo para saber o tamanho dele, depois move o cursor para o inicio novametne com o segundo fseek.
+// Após isso ele pega o tamanho do arquivo e divide pelo tamanho da palavra, e chega no resultado.
+// Por final ele aloca a memória necessaria para essas palavras e verifica se deu certo a alocação, se deu certo ele usa o fread para ler o arquivo e por ultimo ele fecha o arquivo.
 void carregar_palavras(Palavra** lista_palavras, int* num_palavras) {
     FILE* arquivo = fopen("palavras.bin", "rb");
     if (arquivo == NULL) {
@@ -210,8 +213,10 @@ void liberar_jogo(Jogo* jogo) {
     }
 }
 
+// Inicialmente libera a memória para caso tenha outra matriz aberta, depois pega o tamanho da linha e da coluna com o jogador, aloca a memoria necessaria para as linhas e valida se a alocação deu certo.
+// Executa um for inicial para as linhas e dentro outro for para as colunas, alocando a memória necessaria para isso também, ai dentro do for verifica se a alocação das colunas deu certo, caso de errado da um exit.
 void gerar_matriz(Jogo* jogo) {
-    liberar_jogo(jogo); // Libera memoria se ja houver uma matriz
+    liberar_jogo(jogo); 
 
     jogo->linhas = obter_dimensao("linhas");
     jogo->colunas = obter_dimensao("colunas");
@@ -230,13 +235,12 @@ void gerar_matriz(Jogo* jogo) {
     }
 }
 
+// Receve a lista com todas as palavras e a quantidade de palavras totais, ai coloca todas as palavras como NULL para garantir que não há lixo de memória.
+// Posteriormente aloca a memoria necessaria para as palavras e valida se a alocação foi um sucesso,
+// Depois far um for para adicionar um valor aos indices sorteados baseado na quantidade de palavras
+// E por fim, embaralha as palavras usando a função rand()
 void sortear_palavras_jogo(Jogo* jogo, Palavra* lista_todas_palavras, int num_todas_palavras) {
-    if (num_todas_palavras < NUM_PALAVRAS_JOGO) {
-        printf("Nao ha palavras suficientes no arquivo para iniciar o jogo.\n");
-        return;
-    }
 
-    // Resetar palavras do jogo
     for (int i = 0; i < NUM_PALAVRAS_JOGO; i++) {
         jogo->palavras_jogo[i] = NULL;
     }
@@ -250,7 +254,6 @@ void sortear_palavras_jogo(Jogo* jogo, Palavra* lista_todas_palavras, int num_to
         indices_sorteados[i] = i;
     }
 
-    // Embaralha os indices
     for (int i = num_todas_palavras - 1; i > 0; i--) {
         int j = rand() % (i + 1);
         int temp = indices_sorteados[i];
@@ -258,13 +261,13 @@ void sortear_palavras_jogo(Jogo* jogo, Palavra* lista_todas_palavras, int num_to
         indices_sorteados[j] = temp;
     }
 
+    // Valida se a palavra cabe na MATRIZ (O usuario não pode digitar uma palavra maior que 9 caracteres, mas pode acontecer dele jogar com uma matriz de 7 x 7 e ter palavras com 9 caracteres, ai precisei validar isso)
     jogo->palavras_restantes = 0;
     for (int i = 0; i < NUM_PALAVRAS_JOGO; i++) {
-        // Verifica se a palavra cabe na matriz
         if (strlen(lista_todas_palavras[indices_sorteados[i]].texto) <= jogo->linhas &&
             strlen(lista_todas_palavras[indices_sorteados[i]].texto) <= jogo->colunas) {
             jogo->palavras_jogo[jogo->palavras_restantes] = &lista_todas_palavras[indices_sorteados[i]];
-            jogo->palavras_jogo[jogo->palavras_restantes]->encontrada = 0; // Marca como nao encontrada
+            jogo->palavras_jogo[jogo->palavras_restantes]->encontrada = 0; 
             jogo->palavras_restantes++;
         }
         else {
@@ -444,6 +447,7 @@ void menu_principal() {
             int num_todas_palavras = 0;
             carregar_palavras(&todas_palavras, &num_todas_palavras);
 
+            // Valida se o numero de palavras é menor que minimo necessario, como o minimo é sempre 10, foi gravado em uma variavel global.
             if (num_todas_palavras < MIN_PALAVRAS_ARQUIVO) {
                 printf("E necessario ter no minimo %d palavras cadastradas para iniciar um novo jogo.\n", MIN_PALAVRAS_ARQUIVO);
                 free(todas_palavras);
