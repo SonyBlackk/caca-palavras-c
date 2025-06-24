@@ -1,6 +1,9 @@
-#define _CRT_SECURE_NO_WARNINGS
+// ****************************************************************************************
+// JOGO DE CAÇA PALAVRAS EM C, DESENVOLVIDO POR LUIZ EDUARDO JELONSCHEK E JOÃO PEDRO GEHLEN
+// ****************************************************************************************
+#define _CRT_SECURE_NO_WARNINGS // Visual Studio tava me impedindo de rodar o codigo por conta dos printf e scanf não seguros, ai coloquei isso
 
-
+// Bibliotecas
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -29,7 +32,7 @@ typedef struct {
 } Jogo;
 
 
-// "Sumario" das funções, para facilitar a leitura e entendimento do código
+// "Sumario" das funções, para facilitar a leitura e entendimento do código.
 // Funcoes de manipulacao de arquivo
 void salvar_palavra(const Palavra* p);
 void carregar_palavras(Palavra** lista_palavras, int* num_palavras);
@@ -73,7 +76,7 @@ void salvar_palavra(const Palavra* p) {
 }
 
 // Função carregar: Cria um ponteiro do tipo FILE, que será utilizado para ler as palavras do arquivo binario "palavras.bin".
-// Ela recebe dois argumentos, o lista_palavras e num_palavras, que viram como NULL, 
+// Ela recebe dois argumentos, o lista_palavras e num_palavras, que viram como NULL, a ca
 void carregar_palavras(Palavra** lista_palavras, int* num_palavras) {
     FILE* arquivo = fopen("palavras.bin", "rb");
     if (arquivo == NULL) {
@@ -225,14 +228,6 @@ void gerar_matriz(Jogo* jogo) {
             exit(1);
         }
     }
-
-    // Inicializa a matriz com caracteres aleatorios temporariamente
-    // Esta parte sera substituida pela insercao de palavras e preenchimento aleatorio
-    // for (int i = 0; i < jogo->linhas; i++) {
-    //     for (int j = 0; j < jogo->colunas; j++) {
-    //         jogo->matriz[i][j] = 'A' + (rand() % 26);
-    //     }
-    // }
 }
 
 void sortear_palavras_jogo(Jogo* jogo, Palavra* lista_todas_palavras, int num_todas_palavras) {
@@ -429,7 +424,7 @@ void menu_principal() {
     Jogo jogo_atual;
     inicializar_jogo(&jogo_atual);
 
-    srand(time(NULL)); // Inicializa o gerador de numeros aleatorios
+    srand(time(NULL)); // Vai ser utilizado para gerar numeros aleatorios *_*
 
     do {
         printf("\n--- Menu Principal ---\n");
@@ -500,7 +495,7 @@ void menu_principal() {
             printf("Digite a nova palavra (min 5 letras): ");
             fgets(nova_palavra.texto, MAX_PALAVRA_LEN, stdin);
             nova_palavra.texto[strcspn(nova_palavra.texto, "\n")] = 0; // Remove newline
-            if (strlen(nova_palavra.texto) < 5) {
+            if (strlen(nova_palavra.texto) <= 5) {
                 printf("A palavra deve ter no minimo 5 letras.\n");
             }
             else if (palavra_existe(nova_palavra.texto)) {
@@ -564,10 +559,7 @@ void menu_pos_jogo() {
 
         switch (opcao) {
         case 1:
-            // Reinicia o jogo chamando o menu principal e quebrando o loop do menu pos-jogo
-            return;
         case 2:
-            // Retorna ao menu inicial (que eh o loop principal do menu_principal)
             return;
         case 3:
             printf("Saindo do jogo. Ate mais!\n");
