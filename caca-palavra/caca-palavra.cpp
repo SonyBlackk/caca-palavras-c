@@ -511,7 +511,7 @@ void menu_principal() {
             printf("Digite a nova palavra (min 5 letras): ");
             fgets(nova_palavra.texto, MAX_PALAVRA_LEN, stdin);
             nova_palavra.texto[strcspn(nova_palavra.texto, "\n")] = 0; // Remove newline
-            if (strlen(nova_palavra.texto) <= 5) {
+            if (strlen(nova_palavra.texto) < 5) {
                 printf("A palavra deve ter no minimo 5 letras.\n");
             }
             else if (strlen(nova_palavra.texto) > 9) {
