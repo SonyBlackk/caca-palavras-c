@@ -6,6 +6,7 @@
 *.ko
 *.obj
 *.elf
+*.bin
 
 # Linker output
 *.ilk
@@ -61,7 +62,7 @@ dkms.conf
 *.cache
 *.log
 
-# Diretórios de build do Visual Studio
+# DiretÃ³rios de build do Visual Studio
 Debug/
 Release/
 x64/
