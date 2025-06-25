@@ -1,7 +1,7 @@
 // ****************************************************************************************
 // JOGO DE CAÇA PALAVRAS EM C, DESENVOLVIDO POR LUIZ EDUARDO JELONSCHEK E JOÃO PEDRO GEHLEN
 // ****************************************************************************************
-#define _CRT_SECURE_NO_WARNINGS // Visual Studio tava me impedindo de rodar o codigo por conta dos printf e scanf não seguros, ai coloquei isso
+#define _CRT_SECURE_NO_WARNINGS // Visual Studio tava me impedindo de rodar o codigo por  dos printf e scanf não seguros, ai coloquei isso
 
 // Bibliotecas
 #include <stdio.h>
