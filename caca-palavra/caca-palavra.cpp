@@ -1,7 +1,7 @@
 // ****************************************************************************************
 // JOGO DE CAÇA PALAVRAS EM C, DESENVOLVIDO POR LUIZ EDUARDO JELONSCHEK E JOÃO PEDRO GEHLEN
 // ****************************************************************************************
-#define _CRT_SECURE_NO_WARNINGS // Visual Studio tava me impedindo de rodar o codigo  conta dos printf e scanf não seguros, ai coloquei isso
+#define _CRT_SECURE_NO_WARNINGS // Visual Studio tava me impedindo de rodar o codigo por conta dos printf e scanf não seguros, ai coloquei isso
 
 // Bibliotecas
 #include <stdio.h>
@@ -141,6 +141,7 @@ void apagar_palavra(const char* palavra_apagar) {
     int num_todas_palavras = 0;
     carregar_palavras(&lista_todas_palavras, &num_todas_palavras);
 
+    // Verifica se a palavra digitada pelo usuario existe no arquivo.
     int indice_apagar = -1;
     for (int i = 0; i < num_todas_palavras; i++) {
         if (strcmp(lista_todas_palavras[i].texto, palavra_apagar) == 0) {
@@ -149,8 +150,10 @@ void apagar_palavra(const char* palavra_apagar) {
         }
     }
 
+    // Se existir entra nesse if que vai pegar o arquivo com o modo write, ou seja, vai apagar o conteudo daquele espaço, como funciona demostrado ->
+    // Pega o arquivo palavras.bin inteiro, como abriu com o modo write vai apagar todo o conteudo, entra no for e recoloca todas as palavras antigas, menos a digitada pelo usuário, no ifnal da um free para liberar a memória.
     if (indice_apagar != -1) {
-        FILE* arquivo = fopen("palavras.bin", "wb"); // Abre para sobrescrever
+        FILE* arquivo = fopen("palavras.bin", "wb"); 
         if (arquivo == NULL) {
             printf("Erro ao abrir o arquivo para apagar.\n");
             free(lista_todas_palavras);
@@ -192,6 +195,7 @@ void mostrar_palavras() {
 }
 
 // Funcoes de jogo
+// Inicializa todas as variaveis com os valores zerados para não haver lixo de memoria.
 void inicializar_jogo(Jogo* jogo) {
     jogo->matriz = NULL;
     jogo->linhas = 0;
@@ -202,7 +206,7 @@ void inicializar_jogo(Jogo* jogo) {
         jogo->palavras_jogo[i] = NULL;
     }
 }
-
+// Serve para liberar a memória usada pela matriz do jogo, evitando desperdício de memória.
 void liberar_jogo(Jogo* jogo) {
     if (jogo->matriz != NULL) {
         for (int i = 0; i < jogo->linhas; i++) {
@@ -218,14 +222,18 @@ void liberar_jogo(Jogo* jogo) {
 void gerar_matriz(Jogo* jogo) {
     liberar_jogo(jogo); 
 
+    // Pega o tamanho das linhas e colunas de matriz, sendo no minimo 7 e no maximo 9.
     jogo->linhas = obter_dimensao("linhas");
     jogo->colunas = obter_dimensao("colunas");
 
+    // Aloca memória para as linhas da matriz.
     jogo->matriz = (char**)malloc(jogo->linhas * sizeof(char*));
     if (jogo->matriz == NULL) {
         printf("Erro de alocacao de memoria para linhas da matriz.\n");
         exit(1);
     }
+
+    // A coluna tem um for pq ao contrario das linhas que são um vetor de ponteiros as colunas são o conteudo de cada linhas, por isso precisa do for.
     for (int i = 0; i < jogo->linhas; i++) {
         jogo->matriz[i] = (char*)malloc(jogo->colunas * sizeof(char));
         if (jogo->matriz[i] == NULL) {
@@ -374,10 +382,10 @@ int verificar_palavra(Jogo* jogo, int r1, int c1, int r2, int c2) {
 
 void preencher_espacos_aleatorios(Jogo* jogo) {
     // Esta funcao deve ser chamada depois que as palavras forem inseridas na matriz.
-    // Ela preenche os espacos vazios com letras aleatorias.
+    // Ela preenche os espacos vazios com letras aleatorias, basicamente vai preencher tudo oq não foi usado com as palavras de antes.
     for (int i = 0; i < jogo->linhas; i++) {
         for (int j = 0; j < jogo->colunas; j++) {
-            // Assumindo que ' ' representa um espaco vazio apos a insercao das palavras
+            // Ele assume que ' ' representa um espaco vazio apos a insercao das palavras
             if (jogo->matriz[i][j] == ' ') {
                 jogo->matriz[i][j] = 'A' + (rand() % 26);
             }
@@ -386,6 +394,7 @@ void preencher_espacos_aleatorios(Jogo* jogo) {
 }
 
 // Funcoes auxiliares
+// Pega o tamanho da matriz que o usuario digitar, usado para as linhas e colunas, depois faz um if que verifica se atende o padrão de tamanho da matriz.
 int obter_dimensao(const char* tipo) {
     int dimensao;
     do {
@@ -413,7 +422,7 @@ int palavra_existe(const char* palavra) {
     free(lista_todas_palavras);
     return 0;
 }
-
+// Serve para limpar o buffer de entrada e garantir que não haja resquicios de enter no scanf, garantindo uma nova entrada de dados limpa.
 void limpar_buffer() {
     int c;
     while ((c = getchar()) != '\n' && c != EOF);
@@ -445,6 +454,7 @@ void menu_principal() {
         case 1: {
             Palavra* todas_palavras = NULL;
             int num_todas_palavras = 0;
+            // Pega todas as palavras do arquivo binário "palavras.bin".
             carregar_palavras(&todas_palavras, &num_todas_palavras);
 
             // Valida se o numero de palavras é menor que minimo necessario, como o minimo é sempre 10, foi gravado em uma variavel global.
@@ -511,6 +521,7 @@ void menu_principal() {
             printf("Digite a nova palavra (min 5 letras): ");
             fgets(nova_palavra.texto, MAX_PALAVRA_LEN, stdin);
             nova_palavra.texto[strcspn(nova_palavra.texto, "\n")] = 0; // Remove newline
+            // Faz as validações referente ao tamanho da palavra digitada pelo usuário.
             if (strlen(nova_palavra.texto) < 5) {
                 printf("A palavra deve ter no minimo 5 letras.\n");
             }
@@ -549,7 +560,9 @@ void menu_principal() {
             break;
         case 4:
             printf("Digite a palavra a ser apagada: ");
+            // Captura a palavra digitada pelo usuário usando fgets para controle de buffer overflow e tamanho da variavel.
             fgets(palavra_temp, MAX_PALAVRA_LEN, stdin);
+            // Retira o enter do final da linha, essencial para garantir a funcionalidade do código.
             palavra_temp[strcspn(palavra_temp, "\n")] = 0;
             apagar_palavra(palavra_temp);
             break;
@@ -589,12 +602,13 @@ void menu_pos_jogo() {
     } while (opcao != 1 && opcao != 2 && opcao != 3);
 }
 
+// Função incial, onde começa o programa de fato.
 int main() {
     menu_principal();
     return 0;
 }
 
-// Funcao auxiliar para verificar se uma posicao e valida na matriz
+// Funcao auxiliar para verificar se uma posicao e valida na matriz.
 int is_valid(int r, int c, int linhas, int colunas) {
     return (r >= 0 && r < linhas && c >= 0 && c < colunas);
 }
@@ -635,6 +649,8 @@ void inserir_palavras_na_matriz(Jogo* jogo) {
         {-1, 1}, {-1, -1} // Diagonal (cima-direita, cima-esquerda)
     };
 
+// Aqui vai tentar posicionar cada palavra em uma direção e posição aleatória, para garantir que ela caiba e não sobrescreva letras incompatíveis.
+// Após isso, preenche os espaços vazios restantes com letras aleatórias.
     for (int p_idx = 0; p_idx < jogo->palavras_restantes; p_idx++) {
         Palavra* palavra = jogo->palavras_jogo[p_idx];
         int palavra_colocada = 0;
@@ -652,8 +668,7 @@ void inserir_palavras_na_matriz(Jogo* jogo) {
             tentativas_colocacao++;
         }
         if (!palavra_colocada) {
-            printf("Nao foi possivel colocar a palavra '%s' na matriz. Pode haver problemas de espaco.\n", palavra->texto);
-            // Considerar remover a palavra do jogo ou tentar novamente com outra matriz
+            printf("Nao foi possivel colocar a palavra '%s' na matriz. Pode haver problemas de espaco.\n", palavra->texto); // Sem tratamento ainda pq não me deu tempo :/
         }
     }
     preencher_espacos_aleatorios(jogo);
