@@ -1,6 +1,6 @@
-// ****************************************************************************************
-// JOGO DE CAÇA PALAVRAS EM C, DESENVOLVIDO POR LUIZ EDUARDO JELONSCHEK E JOÃO PEDRO GEHLEN
-// ****************************************************************************************
+// *************************************************************************************************************************************************
+// JOGO DE CAÇA PALAVRAS EM C, DESENVOLVIDO POR LUIZ EDUARDO JELONSCHEK E JOÃO PEDRO GEHLEN DURANTE O 2 SEMESTRE DE ENGENHARIA DE SOFTWARE NA UTFPR.
+// *************************************************************************************************************************************************
 #define _CRT_SECURE_NO_WARNINGS // Visual Studio tava me impedindo de rodar o codigo por conta dos printf e scanf não seguros, ai coloquei isso
 
 // Bibliotecas
@@ -16,7 +16,7 @@
 #define MIN_PALAVRAS_ARQUIVO 10
 #define NUM_PALAVRAS_JOGO 7
 
-// Structs (necessarios conforme a atividade pede)
+// Structs (necessarios pq a atividade pede)
 typedef struct {
     char texto[MAX_PALAVRA_LEN];
     int encontrada;
@@ -32,7 +32,7 @@ typedef struct {
 } Jogo;
 
 
-// "Sumario" das funções, para facilitar a leitura e entendimento do código.
+// "Sumario" das funções, para facilitar a leitura e entendimento do código, não precisaria para todas as funçoes (executadas antes do main), mas achei legal colocar.
 // Funcoes de manipulacao de arquivo
 void salvar_palavra(const Palavra* p);
 void carregar_palavras(Palavra** lista_palavras, int* num_palavras);
@@ -105,6 +105,8 @@ void carregar_palavras(Palavra** lista_palavras, int* num_palavras) {
     fclose(arquivo);
 }
 
+// Função atualizar_palavra: Começa buscando todas as palavras salvas no arquivo "palavras.bin" utilizando a função carregar_palavras, depois faz um if e valida se encontrou a palavra digitada pelo usuario.
+// Se encontrou, abre o arquivo com o modo wb, copia o conteudo e atualiza a palavra, senaão só mostra uma mensagem de aviso opr usuario.
 void atualizar_palavra(const char* palavra_antiga, const Palavra* nova_palavra) {
     Palavra* lista_todas_palavras = NULL;
     int num_todas_palavras = 0;
@@ -289,6 +291,8 @@ void sortear_palavras_jogo(Jogo* jogo, Palavra* lista_todas_palavras, int num_to
     }
 }
 
+// Não tem mto segredo, mostra a matriz do jogo na tela com os índices. Letras normais aparecem como estão,
+// e se alguma letra já foi encontrada (virou número), ela aparece como número mesmo.
 void exibir_matriz(const Jogo* jogo) {
     printf("\n   ");
     for (int j = 0; j < jogo->colunas; j++) {
@@ -309,6 +313,7 @@ void exibir_matriz(const Jogo* jogo) {
     }
 }
 
+// Fica exibindo o status do jogo conforme o usuario vai jogando.
 void exibir_status_jogo(const Jogo* jogo) {
     printf("\n--- Status do Jogo ---\n");
     printf("Tentativas: %d\n", jogo->tentativas);
@@ -323,11 +328,10 @@ void exibir_status_jogo(const Jogo* jogo) {
 }
 
 int verificar_palavra(Jogo* jogo, int r1, int c1, int r2, int c2) {
-    // A implementacao completa desta funcao eh complexa e envolve:
-    // 1. Extrair a sequencia de letras da matriz entre (r1,c1) e (r2,c2).
-    // 2. Comparar essa sequencia com as palavras em jogo->palavras_jogo.
-    // 3. Se encontrar, marcar a palavra como encontrada, substituir na matriz e decrementar palavras_restantes.
-    // 4. Retornar 1 se encontrou, 0 caso contrario.
+    // Extrai a sequencia de letras da matriz entre (r1,c1) e (r2,c2).
+    // Depois vai comparar essa sequencia com as palavras em jogo->palavras_jogo.
+    // Se encontrar, marcar a palavra como encontrada, substituir na matriz e decrementa palavras_restantes.
+    // Retornar 1 se encontrou, 0 caso contrario.
 
     // Determinar a direcao do movimento
     int dr = 0, dc = 0;
@@ -337,7 +341,7 @@ int verificar_palavra(Jogo* jogo, int r1, int c1, int r2, int c2) {
     if (c1 < c2) dc = 1;
     else if (c1 > c2) dc = -1;
 
-    // Se r1 == r2 e c1 == c2, eh um unico ponto, nao uma palavra
+    // Se r1 == r2 e c1 == c2, é um unico ponto, nao uma palavra
     if (dr == 0 && dc == 0) return 0;
 
     // Construir a palavra selecionada
@@ -475,7 +479,7 @@ void menu_principal() {
                 break;
             }
 
-            // Logica do jogo
+            // Aqui fica a logica do jogo em si.
             while (jogo_atual.palavras_restantes > 0) {
                 exibir_matriz(&jogo_atual);
                 exibir_status_jogo(&jogo_atual);
@@ -578,6 +582,10 @@ void menu_principal() {
     } while (opcao != 6);
 }
 
+
+/// <summary>
+/// Menu que vai ser exibido quando o jogo acabar, ou seja, quando o usuário encontrar todas as palavras, pedindo se a pessoa quer começar um novo jogo, sair para o menu inicial ou encerrar o programa.
+/// </summary>
 void menu_pos_jogo() {
     int opcao;
     do {
@@ -613,7 +621,7 @@ int is_valid(int r, int c, int linhas, int colunas) {
     return (r >= 0 && r < linhas && c >= 0 && c < colunas);
 }
 
-// Funcao auxiliar para tentar colocar uma palavra na matriz
+// Funcao para tentar colocar as palavras na matriz.
 int tentar_colocar_palavra(Jogo* jogo, const char* palavra_texto, int r_start, int c_start, int dr, int dc) {
     int len = strlen(palavra_texto);
     // Verificar se a palavra cabe na direcao e posicao
@@ -625,7 +633,7 @@ int tentar_colocar_palavra(Jogo* jogo, const char* palavra_texto, int r_start, i
         }
     }
 
-    // Se cabe, colocar a palavra
+    // Se cabe, coloca a palavra
     for (int i = 0; i < len; i++) {
         int r = r_start + i * dr;
         int c = c_start + i * dc;
@@ -678,8 +686,9 @@ void inserir_palavras_na_matriz(Jogo* jogo) {
 
 
 // Funcao recursiva para verificar se uma palavra pode ser formada a partir de uma posicao
-// Esta funcao eh um exemplo de uso de recursao, embora a verificacao principal do jogo
-// seja feita de forma iterativa na funcao 'verificar_palavra'.
+// Feito com recursividade, onde a funcao chama ela mesma para verificar as direcoes possiveis (cima, baixo, esquerda, direita e diagonais).
+// Só pq precisa usar recursividade no código mesmo kkkkkk
+// Fiz de forma iterativa na funcao 'verificar_palavra'.
 int buscar_palavra_recursiva_aux(char** matriz, int linhas, int colunas, const char* palavra, int r, int c, int idx) {
     // Caso base: se todas as letras da palavra foram encontradas
     if (palavra[idx] == '\0') {
@@ -692,11 +701,10 @@ int buscar_palavra_recursiva_aux(char** matriz, int linhas, int colunas, const c
     }
 
     // Marcar a celula como visitada (para evitar ciclos e reutilizacao na mesma busca)
-    // Uma abordagem simples seria mudar o caractere temporariamente e depois restaurar
     char original_char = matriz[r][c];
-    matriz[r][c] = '#'; // Marca como visitado
+    matriz[r][c] = '#';
 
-    // Tentar todas as 8 direcoes
+    // Vai tentar todas as 8 direcoes
     int dr[] = { -1, -1, -1, 0, 0, 1, 1, 1 };
     int dc[] = { -1, 0, 1, -1, 1, -1, 0, 1 };
 
@@ -708,7 +716,6 @@ int buscar_palavra_recursiva_aux(char** matriz, int linhas, int colunas, const c
         }
     }
 
-    // Desmarcar a celula (backtrack)
     matriz[r][c] = original_char;
 
     return encontrada;
