@@ -611,7 +611,7 @@ int menu_pos_jogo() {
         case 1:
 			return 1; // Retorna 1 para indicar que o jogador quer jogar novamente
         case 2:
-            return;
+            return 0;
         case 3:
             printf("Saindo do jogo. Ate mais!\n");
             exit(0);
