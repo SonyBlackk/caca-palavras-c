@@ -401,7 +401,7 @@ void preencher_espacos_aleatorios(Jogo* jogo) {
         for (int j = 0; j < jogo->colunas; j++) {
             // Ele assume que ' ' representa um espaco vazio apos a insercao das palavras
             if (jogo->matriz[i][j] == ' ') {
-                jogo->matriz[i][j] = 'A' + (rand() % 26);
+                jogo->matriz[i][j] = 'a' + (rand() % 26);
             }
         }
     }
@@ -541,7 +541,7 @@ void menu_principal() {
             if (strlen(nova_palavra.texto) < 5) {
                 printf("A palavra deve ter no minimo 5 letras.\n");
             }
-            else if (strlen(nova_palavra.texto) >= 9) {
+            else if (strlen(nova_palavra.texto) > 9) {
                 printf("A palavra nao pode ter mais de 9 letras");
             }
             else if (palavra_existe(nova_palavra.texto)) {
