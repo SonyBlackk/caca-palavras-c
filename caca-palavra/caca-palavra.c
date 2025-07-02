@@ -1,6 +1,8 @@
 // *************************************************************************************************************************************************
 // JOGO DE CAÇA PALAVRAS EM C, DESENVOLVIDO POR LUIZ EDUARDO JELONSCHEK E JOÃO PEDRO GEHLEN DURANTE O 2 SEMESTRE DE ENGENHARIA DE SOFTWARE NA UTFPR.
 // *************************************************************************************************************************************************
+
+// GitHub do projeto --> https://github.com/SonyBlackk/caca-palavras-c
 #define _CRT_SECURE_NO_WARNINGS // Visual Studio tava me impedindo de rodar o codigo por conta dos printf e scanf não seguros, ai coloquei isso
 
 // Bibliotecas
@@ -696,43 +698,4 @@ void inserir_palavras_na_matriz(Jogo* jogo) {
         jogo->orig_matriz[i] = malloc(jogo->colunas * sizeof(char));
         memcpy(jogo->orig_matriz[i], jogo->matriz[i], jogo->colunas * sizeof(char));
     }
-}
-
-
-
-
-// Funcao recursiva para verificar se uma palavra pode ser formada a partir de uma posicao
-// Feito com recursividade, onde a funcao chama ela mesma para verificar as direcoes possiveis (cima, baixo, esquerda, direita e diagonais).
-// Só pq precisa usar recursividade no código mesmo kkkkkk
-// Fiz de forma iterativa na funcao 'verificar_palavra'.
-int buscar_palavra_recursiva_aux(char** matriz, int linhas, int colunas, const char* palavra, int r, int c, int idx) {
-    // Caso base: se todas as letras da palavra foram encontradas
-    if (palavra[idx] == '\0') {
-        return 1; // Palavra encontrada
-    }
-
-    // Caso base: se a posicao atual esta fora dos limites ou a letra nao corresponde
-    if (!is_valid(r, c, linhas, colunas) || matriz[r][c] != palavra[idx]) {
-        return 0; // Nao eh a palavra
-    }
-
-    // Marcar a celula como visitada (para evitar ciclos e reutilizacao na mesma busca)
-    char original_char = matriz[r][c];
-    matriz[r][c] = '#';
-
-    // Vai tentar todas as 8 direcoes
-    int dr[] = { -1, -1, -1, 0, 0, 1, 1, 1 };
-    int dc[] = { -1, 0, 1, -1, 1, -1, 0, 1 };
-
-    int encontrada = 0;
-    for (int i = 0; i < 8; i++) {
-        encontrada = buscar_palavra_recursiva_aux(matriz, linhas, colunas, palavra, r + dr[i], c + dc[i], idx + 1);
-        if (encontrada) {
-            break;
-        }
-    }
-
-    matriz[r][c] = original_char;
-
-    return encontrada;
 }
