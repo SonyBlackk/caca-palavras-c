@@ -481,7 +481,7 @@ void menu_principal() {
             }
 
             int jogar_novamente = 1;
-            while (jogar_novamente) {
+            while (jogar_novamente == 1) {
                 inicializar_jogo(&jogo_atual);
                 gerar_matriz(&jogo_atual);
                 sortear_palavras_jogo(&jogo_atual, todas_palavras, num_todas_palavras);
