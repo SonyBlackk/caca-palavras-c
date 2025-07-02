@@ -1,8 +1,6 @@
 // *************************************************************************************************************************************************
 // JOGO DE CAÇA PALAVRAS EM C, DESENVOLVIDO POR LUIZ EDUARDO JELONSCHEK E JOÃO PEDRO GEHLEN DURANTE O 2 SEMESTRE DE ENGENHARIA DE SOFTWARE NA UTFPR.
 // *************************************************************************************************************************************************
-
-// GitHub do projeto --> https://github.com/SonyBlackk/caca-palavras-c
 #define _CRT_SECURE_NO_WARNINGS // Visual Studio tava me impedindo de rodar o codigo por conta dos printf e scanf não seguros, ai coloquei isso
 
 // Bibliotecas
