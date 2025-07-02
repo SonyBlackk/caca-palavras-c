@@ -202,9 +202,9 @@ void mostrar_palavras() {
 // Funcoes de jogo
 // Inicializa todas as variaveis com os valores zerados para não haver lixo de memoria.
 void inicializar_jogo(Jogo* jogo) {
-    jogo->matriz = NULL;
+    jogo->matriz = NULL; // Previne tentar usar ou liberar algo que ainda não existe
     jogo->orig_matriz = NULL;
-    jogo->linhas = 0;
+    jogo->linhas = 0; // Previne divisão por zero ou uso indevido
     jogo->colunas = 0;
     jogo->tentativas = 0;
     jogo->palavras_restantes = 0;
