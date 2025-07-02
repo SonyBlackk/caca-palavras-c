@@ -219,11 +219,9 @@ void liberar_jogo(Jogo* jogo) {
         free(jogo->matriz);
         jogo->matriz = NULL;
     }
-
     if (jogo->orig_matriz) {
-        for (int i = 0; i < jogo->linhas; i++) {
+        for (int i = 0; i < jogo->linhas; i++)
             free(jogo->orig_matriz[i]);
-        }
         free(jogo->orig_matriz);
     }
     jogo->matriz = jogo->orig_matriz = NULL;
