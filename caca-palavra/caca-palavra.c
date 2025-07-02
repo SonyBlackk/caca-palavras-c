@@ -59,7 +59,7 @@ int obter_dimensao(const char* tipo);
 int palavra_existe(const char* palavra);
 void limpar_buffer();
 void menu_principal();
-void menu_pos_jogo();
+int menu_pos_jogo();
 int is_valid(int r, int c, int linhas, int colunas);
 
 // Funcoes de manipulacao de arquivo
@@ -480,40 +480,42 @@ void menu_principal() {
                 break;
             }
 
-            gerar_matriz(&jogo_atual);
-            sortear_palavras_jogo(&jogo_atual, todas_palavras, num_todas_palavras);
-            inserir_palavras_na_matriz(&jogo_atual);
+            int jogar_novamente = 1;
+            while (jogar_novamente) {
+                inicializar_jogo(&jogo_atual);
+                gerar_matriz(&jogo_atual);
+                sortear_palavras_jogo(&jogo_atual, todas_palavras, num_todas_palavras);
+                inserir_palavras_na_matriz(&jogo_atual);
 
-            if (jogo_atual.palavras_restantes == 0) {
-                printf("Nao foi possivel iniciar o jogo com as palavras sorteadas e dimensoes da matriz. Tente novamente.\n");
-                liberar_jogo(&jogo_atual);
-                free(todas_palavras);
-                break;
-            }
-
-            // Aqui fica a logica do jogo em si.
-            while (jogo_atual.palavras_restantes > 0) {
-                exibir_matriz(&jogo_atual);
-                exibir_status_jogo(&jogo_atual);
-
-                int r1, c1, r2, c2;
-                printf("Digite as coordenadas de inicio (linha coluna) ou -1 para sair: \n");
-                scanf("%d", &r1);
-                if (r1 == -1) break;
-                scanf("%d", &c1);
-                printf("Digite as coordenadas de fim (linha coluna): \n");
-                scanf("%d", &r2);
-                scanf("%d", &c2);
-                limpar_buffer();
-
-                jogo_atual.tentativas++;
-                if (!verificar_palavra(&jogo_atual, r1, c1, r2, c2)) {
-                    printf("Palavra nao encontrada ou selecao invalida. Tente novamente.\n");
+                if (jogo_atual.palavras_restantes == 0) {
+                    printf("Nao foi possivel iniciar o jogo com as palavras sorteadas e dimensoes da matriz. Tente novamente.\n");
+                    liberar_jogo(&jogo_atual);
+                    break;
                 }
-            }
 
-            if (jogo_atual.palavras_restantes == 0) {
-                printf("\nParabens! Voce encontrou todas as palavras em %d tentativas!\n", jogo_atual.tentativas);
+                // Aqui fica a logica do jogo em si.
+                while (jogo_atual.palavras_restantes > 0) {
+                    exibir_matriz(&jogo_atual);
+                    exibir_status_jogo(&jogo_atual);
+
+                    int r1, c1, r2, c2;
+                    printf("Digite as coordenadas de inicio (linha coluna) ou -1 para sair: \n");
+                    scanf("%d", &r1);
+                    if (r1 == -1) break;
+                    scanf("%d", &c1);
+                    printf("Digite as coordenadas de fim (linha coluna): \n");
+                    scanf("%d", &r2);
+                    scanf("%d", &c2);
+                    limpar_buffer();
+
+                    jogo_atual.tentativas++;
+                    if (!verificar_palavra(&jogo_atual, r1, c1, r2, c2)) {
+                        printf("Palavra nao encontrada ou selecao invalida. Tente novamente.\n");
+                    }
+                }
+
+                if (jogo_atual.palavras_restantes == 0) {
+                    printf("\nParabens! Voce encontrou todas as palavras em %d tentativas!\n", jogo_atual.tentativas);
 
                     printf("      ____________\n");
                     printf("     '-._==_==_.-'\n");
@@ -525,11 +527,11 @@ void menu_principal() {
                     printf("           ) (\n");
                     printf("         _.' '._\n");
                     printf("        *\"\"\"\"\"\"\"*\n");
-                
-            }
+                }
 
-            menu_pos_jogo();
-            liberar_jogo(&jogo_atual);
+                jogar_novamente = menu_pos_jogo(); // 1 para novo jogo, 0 para voltar
+                liberar_jogo(&jogo_atual);
+            }
             free(todas_palavras);
             break;
         }
@@ -595,10 +597,8 @@ void menu_principal() {
 }
 
 
-/// <summary>
 /// Menu que vai ser exibido quando o jogo acabar, ou seja, quando o usuário encontrar todas as palavras, pedindo se a pessoa quer começar um novo jogo, sair para o menu inicial ou encerrar o programa.
-/// </summary>
-void menu_pos_jogo() {
+int menu_pos_jogo() {
     int opcao;
     do {
         printf("\n--- Fim de Jogo ---\n");
@@ -611,6 +611,7 @@ void menu_pos_jogo() {
 
         switch (opcao) {
         case 1:
+			return 1; // Retorna 1 para indicar que o jogador quer jogar novamente
         case 2:
             return;
         case 3:
