@@ -541,8 +541,8 @@ void menu_principal() {
             if (strlen(nova_palavra.texto) < 5) {
                 printf("A palavra deve ter no minimo 5 letras.\n");
             }
-            else if (strlen(nova_palavra.texto) > 9) {
-                printf("A palavra nao pode ter mais de 10 letras");
+            else if (strlen(nova_palavra.texto) >= 9) {
+                printf("A palavra nao pode ter mais de 9 letras");
             }
             else if (palavra_existe(nova_palavra.texto)) {
                 printf("A palavra '%s' ja existe no cadastro.\n", nova_palavra.texto);
